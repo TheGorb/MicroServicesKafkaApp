@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentConsumer {
-    @KafkaListener(topics = "payment-events", groupId = "paymentGroup")
-    public void consumePaymentEvent(String paymentEvent) {
-        System.out.println("Consumed the payment event from Kafka: " + paymentEvent);
+    @KafkaListener(topics = "addCustomer", groupId = "customerGroup", concurrency = "1")
+    public void consumePaymentEvent(String newCustomerEvent) {
+        System.out.println("a new customer has been created: " + newCustomerEvent);
     }
 }

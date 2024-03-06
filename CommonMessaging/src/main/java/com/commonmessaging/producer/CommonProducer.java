@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CommonProducer {
+
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public CommonProducer(KafkaTemplate<String, Object> kafkaTemplate) {
