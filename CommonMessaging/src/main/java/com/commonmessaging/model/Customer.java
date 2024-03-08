@@ -1,6 +1,8 @@
 package com.commonmessaging.model;
 
 
+import org.bson.json.JsonObject;
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Customer {
     @Id
     private String id;
+
     private String name;
     private String email;
     private String phone;
@@ -54,6 +57,15 @@ public class Customer {
                 ",\n\temail=" + email +
                 ",\n\tphone=" + phone +
                 "\n}";
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("name", name);
+        json.put("email", email);
+        json.put("phone", phone);
+        return json;
     }
 }
 

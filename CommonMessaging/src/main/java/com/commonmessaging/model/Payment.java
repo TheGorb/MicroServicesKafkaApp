@@ -1,5 +1,6 @@
 package com.commonmessaging.model;
 
+import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -32,5 +33,14 @@ public class Payment {
 
     public String getCustomerName() {
         return customerName;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("customerName", customerName);
+        json.put("amount", amount);
+        json.put("currency", currency);
+        return json;
     }
 }
