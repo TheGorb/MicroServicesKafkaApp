@@ -1,6 +1,8 @@
 package com.commonmessaging.model;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.json.JsonObject;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
@@ -15,7 +17,8 @@ public class Customer {
     private String email;
     private String phone;
 
-    public Customer(String name, String email, String phone) {
+    @JsonCreator
+    public Customer(@JsonProperty("name") String name, @JsonProperty("email") String email, @JsonProperty("phone") String phone) {
         this.name = name;
         this.email = email;
         this.phone = phone;

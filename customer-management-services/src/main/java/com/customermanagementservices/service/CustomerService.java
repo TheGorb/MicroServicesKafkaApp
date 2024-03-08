@@ -17,9 +17,9 @@ public class CustomerService {
     }
 
     public Customer addCustomer(Customer customer) {
-        Customer savedCustomer = customerRepository.save(customer);
-        commonProducer.sendKafkaEvent("addCustomer", savedCustomer.toJson());
-        return savedCustomer;
+        System.out.println(customer.toJson());
+        commonProducer.sendKafkaEvent("addCustomer", customer);
+        return customer;
     }
 
     public Customer updateCustomer(Customer customer) {
