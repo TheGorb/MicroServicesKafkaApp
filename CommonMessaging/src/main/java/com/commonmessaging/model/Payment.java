@@ -1,5 +1,6 @@
 package com.commonmessaging.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,13 +8,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Payment {
     @Id
+    @JsonProperty("id")
     private String id;
 
     private final String amount;
     private final String currency;
     private final String customerId;
 
-    public Payment(String amount, String currency, String customerId) {
+    public Payment(@JsonProperty("amount") String amount,@JsonProperty("currency") String currency,@JsonProperty("customerId") String customerId) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;

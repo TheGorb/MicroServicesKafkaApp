@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Customer {
     @Id
+    @JsonProperty("id")
     private String id;
 
     private String name;
