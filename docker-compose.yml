@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  customer-management-services:
+    build: ./customer-management-services
+    ports:
+      - "8081:8080"
+
+  payment-processing-services:
+    build: ./payment-processing-services
+    ports:
+      - "8082:8080"
