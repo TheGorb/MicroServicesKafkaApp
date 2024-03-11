@@ -19,13 +19,17 @@ services:
     image: mongo
     ports:
       - "27017:27017"
+        
+  customer-management-service:
+      build:
+        context: .
+        dockerfile: customer-management-services/Dockerfile
+      ports:
+        - "8084:8080"
 
-  customer-management-services:
-    build: ./customer-management-services
+  payment-processing-service:
+    build:
+      context: .
+      dockerfile: payment-processing-services/Dockerfile
     ports:
-      - "8081:8080"
-
-  payment-processing-services:
-    build: ./payment-processing-services
-    ports:
-      - "8082:8080"
+      - "8085:8080"

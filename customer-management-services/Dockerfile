@@ -1,14 +1,12 @@
 FROM maven:3-eclipse-temurin-21 as builder
 
-COPY CommonMessaging /usr/src/app/CommonMessaging
-WORKDIR /usr/src/app/CommonMessaging
-RUN mvn clean install
+COPY ../CommonMessaging /usr/src/CommonMessaging
+RUN cd usr/src/CommonMessaging && mvn clean install
 
-COPY customer-management-services /usr/src/app/customer-management-services
-WORKDIR /usr/src/app/customer-management-services
-RUN mvn clean package
+COPY customer-management-services /usr/src/customer-management-services
+RUN cd /usr/src/customer-management-services && mvn clean package
 
 FROM openjdk:11-jre-slim
-COPY --from=builder /usr/src/app/customer-management-services/target/customer-management-services-0.0.1-SNAPSHOT.jar /usr/app/customer-management-services.jar
+COPY --from=builder /usr/src/customer-management-services/customer-management-services-*.jar /usr/app/customer-management-services.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/app/microservice.jar"]
+ENTRYPOINT ["java","-jar","/usr/app/customer-management-services.jar"]

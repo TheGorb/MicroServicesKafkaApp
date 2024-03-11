@@ -21,7 +21,7 @@ public class PaymentService {
         return savedPayment;
     }
 
-    public Payment getPaymentByCustomerName(String customerName) {
-        return paymentRepository.findByCustomerName(customerName);
+    public Payment getPaymentByCustomerId(String customerId) {
+        return paymentRepository.findByCustomerId(customerId);
     }
 }
