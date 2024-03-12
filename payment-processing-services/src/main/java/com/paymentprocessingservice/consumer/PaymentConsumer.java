@@ -14,13 +14,14 @@ public class PaymentConsumer {
         this.paymentRepository = paymentRepository;
     }
 
-    @KafkaListener(topics = "newCustomer", groupId = "customerGroup", concurrency = "1")
+    @KafkaListener(topics = "newCustomer", groupId = "newPayment", concurrency = "2")
     public void consumeCustomerEvent(Customer customerEvent) {
         paymentRepository.save(new Payment("0", "0", customerEvent.getId()));
+        System.out.println("a new customer has been created: " + customerEvent);
     }
 
-    @KafkaListener(topics = "newPayment", groupId = "paymentGroup", concurrency = "1")
+    @KafkaListener(topics = "newPayment", groupId = "paymentGroup")
     public void consumePaymentEvent(Payment paymentEvent) {
-        System.out.println("a new customer has been created: " + paymentEvent);
+        System.out.println("a new payment has been created: " + paymentEvent);
     }
 }
