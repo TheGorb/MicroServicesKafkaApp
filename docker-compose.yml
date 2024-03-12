@@ -38,3 +38,10 @@ services:
       dockerfile: payment-processing-services/Dockerfile
     ports:
       - "8082:8080"
+
+  balance-services:
+    build:
+      context: .
+      dockerfile: balance-services/Dockerfile
+    ports:
+      - "8083:8080"
