@@ -1,4 +1,4 @@
-package com.paymentprocessingservice.repository;
+package com.commonmessaging.repository;
 
 import com.commonmessaging.model.Customer;
 import org.springframework.data.mongodb.repository.MongoRepository;

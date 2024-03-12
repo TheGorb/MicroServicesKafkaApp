@@ -1,18 +1,18 @@
 package com.balanceservices.consumer;
 
 import com.balanceservices.repository.BalanceRepository;
-import com.balanceservices.repository.CustomerRepository;
 import com.commonmessaging.model.Balance;
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.model.Payment;
+import com.commonmessaging.repository.CustomerRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BalanceConsumer {
     private final BalanceRepository balanceRepository;
-
     private final CustomerRepository customerRepository;
+
     public BalanceConsumer(BalanceRepository balanceRepository, CustomerRepository customerRepository) {
         this.balanceRepository = balanceRepository;
         this.customerRepository = customerRepository;
@@ -51,7 +51,6 @@ public class BalanceConsumer {
         if (customer != null) {
             customer.setCustomerBalance(new Balance(customer.getId(), "0", "0"));
             customerRepository.save(customer);
-            System.out.println("new balance : " + customer);
         } else {
             System.out.println("customer not found: " + customerEvent.getId());
         }

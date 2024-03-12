@@ -2,7 +2,7 @@ package com.paymentprocessingservice.consumer;
 
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.model.Payment;
-import com.paymentprocessingservice.repository.CustomerRepository;
+import com.commonmessaging.repository.CustomerRepository;
 import com.paymentprocessingservice.repository.PaymentRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -24,10 +24,8 @@ public class PaymentConsumer {
 
         if (customer != null) {
             Payment newPayment = new Payment("0", "USD", customer.getId());
-            System.out.println("new payment : " + newPayment.toString());
             customer.addPayment(newPayment);
             customerRepository.save(customer);
-            System.out.println("new payment : " + customer);
         } else {
             System.out.println("customer not found: " + customerEvent.getId());
         }

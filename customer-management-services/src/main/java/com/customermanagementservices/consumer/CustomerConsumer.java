@@ -2,7 +2,7 @@ package com.customermanagementservices.consumer;
 
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.producer.CommonProducer;
-import com.customermanagementservices.repository.CustomerRepository;
+import com.commonmessaging.repository.CustomerRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

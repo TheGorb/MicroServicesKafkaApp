@@ -1,6 +1,6 @@
 package com.customermanagementservices.service;
 
-import com.customermanagementservices.repository.CustomerRepository;
+import com.commonmessaging.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.producer.CommonProducer;
