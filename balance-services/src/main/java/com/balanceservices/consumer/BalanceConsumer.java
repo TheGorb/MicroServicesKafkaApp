@@ -42,7 +42,7 @@ public class BalanceConsumer {
 
     @KafkaListener(topics = "newCustomer", groupId = "newCustomerBalance", concurrency = "2")
     public void consumeNewCustomerBalance(Customer customerEvent) {
-        balanceRepository.
+        //balanceRepository.
         //balanceRepository.save(new Balance(customerEvent.getId(), "0", "0"));
         System.out.println("new balance : " + customerEvent);
     }
