@@ -8,6 +8,9 @@ import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document
 public class Customer {
     @Id
@@ -17,6 +20,10 @@ public class Customer {
     private String name;
     private String email;
     private String phone;
+    @JsonProperty("customerPayment")
+    private ArrayList<Payment> customerPayment = new ArrayList<>();
+    @JsonProperty("customerBalance")
+    private Balance customerBalance;
 
     @JsonCreator
     public Customer(@JsonProperty("name") String name, @JsonProperty("email") String email, @JsonProperty("phone") String phone) {
@@ -53,6 +60,30 @@ public class Customer {
         this.phone = phone;
     }
 
+    public void setCustomerPayment(ArrayList<Payment> customerPayment) {
+        this.customerPayment = customerPayment;
+    }
+
+    public void addPayment(Payment payment) {
+        this.customerPayment.add(payment);
+    }
+
+    public List<Payment> getCustomerPayment() {
+        return customerPayment;
+    }
+
+    public void removePayment(Payment payment) {
+        this.customerPayment.remove(payment);
+    }
+
+    public void setCustomerBalance(Balance customerBalance) {
+        this.customerBalance = customerBalance;
+    }
+
+    public Balance getCustomerBalance() {
+        return customerBalance;
+    }
+
     @Override
     public String toString() {
         return "Customer {" +
@@ -60,6 +91,8 @@ public class Customer {
                 ",\n\tname=" + name +
                 ",\n\temail=" + email +
                 ",\n\tphone=" + phone +
+                ",\n\tpayment=" + customerPayment +
+                ",\n\tbalance=" + customerBalance +
                 "\n}";
     }
 
