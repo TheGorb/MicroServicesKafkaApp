@@ -17,7 +17,7 @@ public class PaymentService {
 
     public Payment addPayment(Payment payment) {
         Payment savedPayment = paymentRepository.save(payment);
-        commonProducer.sendKafkaEvent("newPayment", savedPayment.toJson());
+        commonProducer.sendKafkaEvent("newPayment", savedPayment.toJson(), "payment");
         return savedPayment;
     }
 

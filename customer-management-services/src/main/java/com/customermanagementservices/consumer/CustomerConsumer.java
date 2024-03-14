@@ -19,17 +19,17 @@ public class CustomerConsumer {
     @KafkaListener(topics = "addCustomer", groupId = "customerGroup", concurrency = "1")
     public void addCustomer(Customer customerEvent) {
         Customer newCustomer = customerRepository.save(customerEvent);
-        commonProducer.sendKafkaEvent("newCustomer", newCustomer.toJson());
+        commonProducer.sendKafkaEvent("newCustomer", newCustomer.toJson(), "customer");
     }
 
     @KafkaListener(topics = "updateCustomer", groupId = "customerGroup")
     public void updateCustomer(Customer customerEvent) {
         customerRepository.findById(customerEvent.getId())
-                .ifPresent(customer -> {
-                    customer.setName(customerEvent.getName());
-                    customer.setEmail(customerEvent.getEmail());
-                    customer.setPhone(customerEvent.getPhone());
-                    customerRepository.save(customer);
+            .ifPresent(customer -> {
+                customer.setName(customerEvent.getName());
+                customer.setEmail(customerEvent.getEmail());
+                customer.setPhone(customerEvent.getPhone());
+                customerRepository.save(customer);
         });
     }
 }

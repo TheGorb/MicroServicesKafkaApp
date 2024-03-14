@@ -25,7 +25,7 @@ public class Balance {
         return pendingCharges;
     }
 
-    public String getCurrentBalance() {
+    public String getBalance() {
         return currentBalance;
     }
 
@@ -35,14 +35,6 @@ public class Balance {
 
     public String getId() {
         return id;
-    }
-
-    public void setCurrentBalance(String currentBalance) {
-        this.currentBalance = currentBalance;
-    }
-
-    public void setPendingCharges(String pendingCharges) {
-        this.pendingCharges = pendingCharges;
     }
 
     public void addBalance(String amount) {

@@ -11,16 +11,18 @@ public class Payment {
     @Id
     @JsonProperty("id")
     private String id;
-
     private final String amount;
     private final String currency;
     private final String customerId;
+    @JsonProperty("accepted")
+    private Boolean accepted;
 
     @JsonCreator
-    public Payment(@JsonProperty("amount") String amount,@JsonProperty("currency") String currency,@JsonProperty("customerId") String customerId) {
+    public Payment(@JsonProperty("amount") String amount, @JsonProperty("currency") String currency, @JsonProperty("customerId") String customerId) {
         this.amount = amount;
         this.currency = currency;
         this.customerId = customerId;
+        this.accepted = false;
     }
 
     public String getId() {
@@ -35,12 +37,18 @@ public class Payment {
         return amount;
     }
 
+    public Boolean getAccepted() { return accepted; }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
+    }
+
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("id", id);
         json.put("amount", amount);
         json.put("currency", currency);
-        json.put("customerId", currency);
+        json.put("customerId", customerId);
         return json;
     }
 

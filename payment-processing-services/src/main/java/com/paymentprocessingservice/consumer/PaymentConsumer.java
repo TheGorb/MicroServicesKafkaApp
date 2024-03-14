@@ -3,17 +3,14 @@ package com.paymentprocessingservice.consumer;
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.model.Payment;
 import com.commonmessaging.repository.CustomerRepository;
-import com.paymentprocessingservice.repository.PaymentRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentConsumer {
-    private final PaymentRepository paymentRepository;
     private final CustomerRepository customerRepository;
 
-    public PaymentConsumer(PaymentRepository paymentRepository, CustomerRepository customerRepository) {
-        this.paymentRepository = paymentRepository;
+    public PaymentConsumer(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
@@ -31,8 +28,35 @@ public class PaymentConsumer {
         }
     }
 
-    @KafkaListener(topics = "newPayment", groupId = "paymentGroup")
-    public void consumePaymentEvent(Payment paymentEvent) {
-        System.out.println("a new payment has been created: " + paymentEvent);
+    @KafkaListener(topics = "rejectedPayment", groupId = "paymentGroup")
+    public void rejectedPayment(Payment paymentEvent) {
+        Customer customer = customerRepository.findById(paymentEvent.getId())
+                .orElse(null);
+
+        if (customer != null) {
+            Payment newPayment = new Payment(paymentEvent.getAmount(), paymentEvent.getCurrency(), customer.getId());
+            newPayment.setAccepted(false);
+            customer.addPayment(newPayment);
+            customerRepository.save(customer);
+            System.out.println("a new payment has been created: " + paymentEvent);
+        } else {
+            System.out.println("customer not found: " + paymentEvent.getId());
+        }
+    }
+
+    @KafkaListener(topics = "acceptedPayment", groupId = "paymentGroup")
+    public void acceptedPayment(Payment paymentEvent) {
+        Customer customer = customerRepository.findById(paymentEvent.getId())
+                .orElse(null);
+
+        if (customer != null) {
+            Payment newPayment = new Payment(paymentEvent.getAmount(), paymentEvent.getCurrency(), customer.getId());
+            newPayment.setAccepted(true);
+            customer.addPayment(newPayment);
+            customerRepository.save(customer);
+            System.out.println("a new payment has been created: " + paymentEvent);
+        } else {
+            System.out.println("customer not found: " + paymentEvent.getId());
+        }
     }
 }
