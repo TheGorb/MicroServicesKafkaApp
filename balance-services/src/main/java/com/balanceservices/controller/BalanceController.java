@@ -2,7 +2,6 @@ package com.balanceservices.controller;
 
 import com.balanceservices.service.BalanceService;
 import com.commonmessaging.model.Payment;
-import com.commonmessaging.repository.CustomerRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BalanceController {
     private final BalanceService balanceService;
 
-    public BalanceController(BalanceService balanceService, CustomerRepository customerRepository) {
+    public BalanceController(BalanceService balanceService) {
         this.balanceService = balanceService;
     }
 
