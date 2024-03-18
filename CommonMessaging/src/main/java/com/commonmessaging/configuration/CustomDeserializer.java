@@ -15,9 +15,7 @@ public class CustomDeserializer implements Deserializer<Object> {
     @Override
     public Object deserialize(String s, byte[] bytes) {
         String json = new String(bytes);
-        System.out.println("json=" + json);
         String replace = json.substring(1, json.length() - 1).replace("\\", "");
-        System.out.println("replace=" + replace);
         JSONObject jsonObject = new JSONObject(replace);
         String type = jsonObject.getString("type");
 

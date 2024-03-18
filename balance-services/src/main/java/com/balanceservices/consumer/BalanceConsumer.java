@@ -37,8 +37,6 @@ public class BalanceConsumer {
 
     @KafkaListener(topics = "lowerBalance", groupId = "balanceGroup")
     public void consumeLowerBalance(Payment paymentEvent) {
-        System.out.println("lower balance : " + paymentEvent);
-
         Balance balance = balanceRepository.findByCustomerId(paymentEvent.getCustomerId());
         if (balance == null) {
             balance = new Balance(paymentEvent.getCustomerId(), paymentEvent.getAmount(), "0");
@@ -64,7 +62,6 @@ public class BalanceConsumer {
             }
         }
         balanceRepository.save(balance);
-        System.out.println("lower balance : " + paymentEvent);
     }
 
     @KafkaListener(topics = "newCustomer", groupId = "newCustomerBalance")

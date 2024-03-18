@@ -2,10 +2,13 @@ package com.commonmessaging.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Getter
 @Document
 public class Payment {
     @Id
@@ -14,6 +17,7 @@ public class Payment {
     private final String amount;
     private final String currency;
     private final String customerId;
+    @Setter
     @JsonProperty("accepted")
     private Boolean accepted;
 
@@ -25,24 +29,6 @@ public class Payment {
         this.accepted = false;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public Boolean getAccepted() { return accepted; }
-
-    public void setAccepted(Boolean accepted) {
-        this.accepted = accepted;
-    }
-
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("id", id);
@@ -52,7 +38,4 @@ public class Payment {
         return json;
     }
 
-    public String getCustomerId() {
-        return customerId;
-    }
 }

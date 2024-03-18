@@ -1,18 +1,22 @@
 package com.commonmessaging.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Balance {
+    @Getter
     @Id
     @JsonProperty("id")
     private String id;
 
+    @Getter
     private final String customerId;
     private String currentBalance;
+    @Getter
     private String pendingCharges;
 
     public Balance(@JsonProperty("customerId") String customerId, @JsonProperty("currentBalance") String currentBalance, @JsonProperty("pendingCharges") String pendingCharges) {
@@ -21,20 +25,8 @@ public class Balance {
         this.pendingCharges = pendingCharges;
     }
 
-    public String getPendingCharges() {
-        return pendingCharges;
-    }
-
     public String getBalance() {
         return currentBalance;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void addBalance(String amount) {
