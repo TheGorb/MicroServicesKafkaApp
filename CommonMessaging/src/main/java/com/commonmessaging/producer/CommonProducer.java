@@ -1,10 +1,12 @@
 package com.commonmessaging.producer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class CommonProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
@@ -18,7 +20,9 @@ public class CommonProducer {
 
         jsonObject.put("type", eventType);
         jsonObject.put("event", event);
-        System.out.println("Sending event: " + event);
+
+        log.debug("Sending Kafka event. Topic: {}, EventType: {}, Payload: {}", topic, eventType, jsonObject);
+
         kafkaTemplate.send(topic, jsonObject.toString());
     }
 }

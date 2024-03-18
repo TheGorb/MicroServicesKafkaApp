@@ -3,9 +3,11 @@ package com.paymentprocessingservice.consumer;
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.model.Payment;
 import com.commonmessaging.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class PaymentConsumer {
     private final CustomerRepository customerRepository;
@@ -23,8 +25,9 @@ public class PaymentConsumer {
             Payment newPayment = new Payment("0", "USD", customer.getId());
             customer.addPayment(newPayment);
             customerRepository.save(customer);
+            log.info("New customer processed: {}", customerEvent.getId());
         } else {
-            System.out.println("customer not found: " + customerEvent.getId());
+            log.warn("Customer not found: {}", customerEvent.getId());
         }
     }
 
@@ -38,9 +41,9 @@ public class PaymentConsumer {
             newPayment.setAccepted(false);
             customer.addPayment(newPayment);
             customerRepository.save(customer);
-            System.out.println("a new payment has been created: " + paymentEvent);
+            log.info("Rejected payment processed for customer: {}, Payment: {}", customer.getId(), paymentEvent);
         } else {
-            System.out.println("customer not found: " + paymentEvent.getId());
+            log.warn("Customer not found for rejected payment: {}", paymentEvent.getId());
         }
     }
 
@@ -54,9 +57,9 @@ public class PaymentConsumer {
             newPayment.setAccepted(true);
             customer.addPayment(newPayment);
             customerRepository.save(customer);
-            System.out.println("a new payment has been created: " + paymentEvent);
+            log.info("Accepted payment processed for customer: {}, Payment: {}", customer.getId(), paymentEvent);
         } else {
-            System.out.println("customer not found: " + paymentEvent.getId());
+            log.warn("Customer not found for accepted payment: {}", paymentEvent.getId());
         }
     }
 }

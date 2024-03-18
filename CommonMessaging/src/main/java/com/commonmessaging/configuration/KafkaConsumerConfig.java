@@ -1,5 +1,6 @@
 package com.commonmessaging.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
+@Slf4j
 public class KafkaConsumerConfig {
     @Bean
     public ConsumerFactory<String, Object> consumerFactory() {
@@ -28,6 +30,7 @@ public class KafkaConsumerConfig {
         ErrorHandlingDeserializer<String> keyDeserializer = new ErrorHandlingDeserializer<>(new StringDeserializer());
         ErrorHandlingDeserializer<Object> valueDeserializer = new ErrorHandlingDeserializer<>(new CustomDeserializer());
 
+        log.info("Creating Kafka consumer factory with config: {}", configProps);
         return new DefaultKafkaConsumerFactory<>(configProps, keyDeserializer, valueDeserializer);
     }
 
@@ -37,6 +40,8 @@ public class KafkaConsumerConfig {
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setCommonErrorHandler(new DefaultErrorHandler(new FixedBackOff(1000L, 2L)));
+
+        log.info("Kafka Listener Container Factory configured with DefaultErrorHandler and FixedBackOff strategy.");
         return factory;
     }
 }
