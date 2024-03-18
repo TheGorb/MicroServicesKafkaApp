@@ -1,5 +1,4 @@
 package com.commonmessaging.configuration;
-import com.commonmessaging.model.Customer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;

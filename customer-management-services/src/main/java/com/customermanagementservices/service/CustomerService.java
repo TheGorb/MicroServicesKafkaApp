@@ -1,6 +1,6 @@
 package com.customermanagementservices.service;
 
-import com.customermanagementservices.repository.CustomerRepository;
+import com.commonmessaging.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import com.commonmessaging.model.Customer;
 import com.commonmessaging.producer.CommonProducer;
@@ -17,8 +17,8 @@ public class CustomerService {
     }
 
     public Customer addCustomer(Customer customer) {
-        System.out.println(customer.toJson());
-        commonProducer.sendKafkaEvent("addCustomer", customer);
+        Customer newCustomer = customerRepository.save(customer);
+        commonProducer.sendKafkaEvent("newCustomer", newCustomer);
         return customer;
     }
 

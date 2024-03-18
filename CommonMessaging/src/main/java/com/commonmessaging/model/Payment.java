@@ -1,5 +1,6 @@
 package com.commonmessaging.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
@@ -15,6 +16,7 @@ public class Payment {
     private final String currency;
     private final String customerId;
 
+    @JsonCreator
     public Payment(@JsonProperty("amount") String amount,@JsonProperty("currency") String currency,@JsonProperty("customerId") String customerId) {
         this.amount = amount;
         this.currency = currency;

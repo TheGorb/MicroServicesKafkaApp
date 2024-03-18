@@ -1,6 +1,6 @@
-package com.customermanagementservices.config;
+package com.balanceservices.config;
 
-import com.commonmessaging.model.Customer;
+import com.commonmessaging.model.Payment;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -17,22 +17,21 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
-
     @Bean
-    public ConsumerFactory<String, Customer> consumerFactory() {
+    public ConsumerFactory<String, Payment> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "customerGroup");
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "BalanceGroup");
 
-        return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), new JsonDeserializer<>(Customer.class));
+        return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), new JsonDeserializer<>(Payment.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Customer> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Customer> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, Payment> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Payment> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;

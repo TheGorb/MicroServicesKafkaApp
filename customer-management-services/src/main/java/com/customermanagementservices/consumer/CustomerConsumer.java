@@ -1,27 +1,29 @@
 package com.customermanagementservices.consumer;
 
 import com.commonmessaging.model.Customer;
-import com.customermanagementservices.repository.CustomerRepository;
+import com.commonmessaging.producer.CommonProducer;
+import com.commonmessaging.repository.CustomerRepository;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerConsumer {
     private final CustomerRepository customerRepository;
+    private final CommonProducer commonProducer;
 
-    public CustomerConsumer(CustomerRepository customerRepository) {
+    public CustomerConsumer(CustomerRepository customerRepository, CommonProducer commonProducer) {
         this.customerRepository = customerRepository;
+        this.commonProducer = commonProducer;
     }
 
-    @KafkaListener(topics = "addCustomer", groupId = "customerGroup")
+    @KafkaListener(topics = "addCustomer", groupId = "customerGroup", concurrency = "1")
     public void addCustomer(Customer customerEvent) {
-        System.out.println("Consumed the add customer event from Kafka: " + customerEvent.toString());
-        customerRepository.save(customerEvent);
+        Customer newCustomer = customerRepository.save(customerEvent);
+        commonProducer.sendKafkaEvent("newCustomer", newCustomer.toJson());
     }
 
     @KafkaListener(topics = "updateCustomer", groupId = "customerGroup")
     public void updateCustomer(Customer customerEvent) {
-        System.out.println(customerEvent.toString());
         customerRepository.findById(customerEvent.getId())
                 .ifPresent(customer -> {
                     customer.setName(customerEvent.getName());
@@ -29,6 +31,5 @@ public class CustomerConsumer {
                     customer.setPhone(customerEvent.getPhone());
                     customerRepository.save(customer);
         });
-        System.out.println("Consumed the update customer event from Kafka: " + customerEvent);
     }
 }
