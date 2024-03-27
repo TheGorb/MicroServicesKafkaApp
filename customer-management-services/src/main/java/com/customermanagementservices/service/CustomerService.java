@@ -18,13 +18,13 @@ public class CustomerService {
 
     public Customer addCustomer(Customer customer) {
         Customer newCustomer = customerRepository.save(customer);
-        commonProducer.sendKafkaEvent("newCustomer", newCustomer);
+        commonProducer.sendKafkaEvent("newCustomer", newCustomer.toJson(), "customer");
         return customer;
     }
 
     public Customer updateCustomer(Customer customer) {
         Customer updatedCustomer = customerRepository.save(customer);
-        commonProducer.sendKafkaEvent("updateCustomer", updatedCustomer);
+        commonProducer.sendKafkaEvent("updateCustomer", updatedCustomer, "customer");
         return updatedCustomer;
     }
 

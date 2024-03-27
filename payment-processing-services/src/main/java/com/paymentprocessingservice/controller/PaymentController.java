@@ -2,10 +2,13 @@ package com.paymentprocessingservice.controller;
 
 import com.commonmessaging.model.Payment;
 import com.paymentprocessingservice.service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/payments")
+@Slf4j
+@RequestMapping(path = "/payments", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class PaymentController {
     private final PaymentService paymentService;
 
@@ -13,15 +16,15 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Payment addPayment(@RequestBody Payment payment) {
-        System.out.println("PaymentController: adding payment: " + payment);
+        log.info("Adding payment: {}", payment);
         return paymentService.addPayment(payment);
     }
 
-    @GetMapping("/{customerId}")
+    @GetMapping(path = "/{customerId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Payment getPaymentByCustomerName(@PathVariable String customerId) {
-        System.out.println("PaymentController: getting payment by customerId: " + customerId);
+        log.info("Getting payment by customerId: {}", customerId);
         return paymentService.getPaymentByCustomerId(customerId);
     }
 }

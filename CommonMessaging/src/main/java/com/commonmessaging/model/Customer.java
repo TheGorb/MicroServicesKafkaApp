@@ -3,7 +3,8 @@ package com.commonmessaging.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.bson.json.JsonObject;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,15 +14,25 @@ import java.util.List;
 
 @Document
 public class Customer {
+    @Getter
     @Id
     @JsonProperty("id")
     private String id;
 
+    @Getter
+    @Setter
     private String name;
+    @Getter
+    @Setter
     private String email;
+    @Getter
+    @Setter
     private String phone;
+    @Setter
     @JsonProperty("customerPayment")
     private ArrayList<Payment> customerPayment = new ArrayList<>();
+    @Setter
+    @Getter
     @JsonProperty("customerBalance")
     private Balance customerBalance;
 
@@ -32,56 +43,16 @@ public class Customer {
         this.phone = phone;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setCustomerPayment(ArrayList<Payment> customerPayment) {
-        this.customerPayment = customerPayment;
-    }
-
     public void addPayment(Payment payment) {
         this.customerPayment.add(payment);
     }
 
     public List<Payment> getCustomerPayment() {
-        return customerPayment;
+        return this.customerPayment;
     }
 
     public void removePayment(Payment payment) {
         this.customerPayment.remove(payment);
-    }
-
-    public void setCustomerBalance(Balance customerBalance) {
-        this.customerBalance = customerBalance;
-    }
-
-    public Balance getCustomerBalance() {
-        return customerBalance;
     }
 
     @Override

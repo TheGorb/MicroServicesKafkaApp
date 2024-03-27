@@ -1,4 +1,5 @@
 package com.commonmessaging.configuration;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Slf4j
 public class KafkaProducerConfig {
 
     @Bean
@@ -19,6 +21,7 @@ public class KafkaProducerConfig {
         configProps.put(org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
+        log.info("Configuring Kafka Producer with properties: {}", configProps);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 

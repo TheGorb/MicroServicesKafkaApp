@@ -4,6 +4,7 @@ import com.commonmessaging.model.Payment;
 import com.paymentprocessingservice.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
 import com.commonmessaging.producer.CommonProducer;
+
 @Service
 public class PaymentService {
     private final PaymentRepository paymentRepository;
@@ -17,7 +18,7 @@ public class PaymentService {
 
     public Payment addPayment(Payment payment) {
         Payment savedPayment = paymentRepository.save(payment);
-        commonProducer.sendKafkaEvent("newPayment", savedPayment.toJson());
+        commonProducer.sendKafkaEvent("newPayment", savedPayment.toJson(), "payment");
         return savedPayment;
     }
 
