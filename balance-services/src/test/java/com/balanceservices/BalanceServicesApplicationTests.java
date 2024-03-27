@@ -185,8 +185,8 @@ class BalanceServicesApplicationTests {
                 .verify(customerRepository, times(1))
                 .save(any(Customer.class));
 
-        assertThat(logCaptor.getInfoLogs().get(0))
-                .startsWith("insufficient funds.");
+        assertThat(logCaptor.getWarnLogs().get(0))
+                .contains("insufficient funds.");
     }
 
     @Test
