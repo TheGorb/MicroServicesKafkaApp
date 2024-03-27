@@ -16,7 +16,7 @@ public class PaymentConsumer {
         this.customerRepository = customerRepository;
     }
 
-    @KafkaListener(topics = "newCustomer", groupId = "newPayment", concurrency = "2")
+    @KafkaListener(topics = "newCustomer", groupId = "newPayment")
     public void consumeCustomerEvent(Customer customerEvent) {
         Customer customer = customerRepository.findById(customerEvent.getId())
                 .orElse(null);

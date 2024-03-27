@@ -26,6 +26,6 @@ public class BalanceController {
 
     @PostMapping(path = "/lower", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void lowerBalance(@RequestBody Payment payment) {
-        balanceService.lowerBalance(payment.getCustomerId(), Double.parseDouble(payment.getAmount()));
+        balanceService.lowerBalance(payment);
     }
 }

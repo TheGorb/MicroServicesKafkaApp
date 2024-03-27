@@ -16,7 +16,7 @@ public class BalanceService {
         commonProducer.sendKafkaEvent("addBalance", new Payment(String.valueOf(payment.getAmount()), "USD", payment.getCustomerId()).toJson(), "payment");
     }
 
-    public void lowerBalance(String customerId, double amount) {
-        commonProducer.sendKafkaEvent("lowerBalance", new Payment(String.valueOf(amount), "USD", customerId).toJson(), "balance");
+    public void lowerBalance(Payment payment) {
+        commonProducer.sendKafkaEvent("lowerBalance", new Payment(String.valueOf(payment.getAmount()), "USD", payment.getCustomerId()).toJson(), "payment");
     }
 }

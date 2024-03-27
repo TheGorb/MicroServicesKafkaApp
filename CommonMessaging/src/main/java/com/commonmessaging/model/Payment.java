@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Accessors(chain = true)
 @Getter
 @Document
 public class Payment {
@@ -37,5 +39,4 @@ public class Payment {
         json.put("customerId", customerId);
         return json;
     }
-
 }
