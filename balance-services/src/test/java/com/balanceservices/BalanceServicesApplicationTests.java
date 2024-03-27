@@ -213,7 +213,6 @@ class BalanceServicesApplicationTests {
                 .startsWith("New customer balance initialized for customer:");
     }
 
-
     @Test
     void consumeNewCustomerBalance_badCustomer() {
         Customer mockCustomer = new Customer("testCustomer", "testCustomer@email.com", "123")

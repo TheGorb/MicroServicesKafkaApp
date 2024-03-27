@@ -33,7 +33,7 @@ public class PaymentConsumer {
 
     @KafkaListener(topics = "rejectedPayment", groupId = "paymentGroup")
     public void rejectedPayment(Payment paymentEvent) {
-        Customer customer = customerRepository.findById(paymentEvent.getId())
+        Customer customer = customerRepository.findById(paymentEvent.getCustomerId())
                 .orElse(null);
 
         if (customer != null) {
@@ -49,7 +49,7 @@ public class PaymentConsumer {
 
     @KafkaListener(topics = "acceptedPayment", groupId = "paymentGroup")
     public void acceptedPayment(Payment paymentEvent) {
-        Customer customer = customerRepository.findById(paymentEvent.getId())
+        Customer customer = customerRepository.findById(paymentEvent.getCustomerId())
                 .orElse(null);
 
         if (customer != null) {
@@ -59,7 +59,7 @@ public class PaymentConsumer {
             customerRepository.save(customer);
             log.info("Accepted payment processed for customer: {}, Payment: {}", customer.getId(), paymentEvent);
         } else {
-            log.warn("Customer not found for accepted payment: {}", paymentEvent.getId());
+            log.warn("Customer not found for rejected payment: {}", paymentEvent.getId());
         }
     }
 }
