@@ -30,9 +30,6 @@ class PaymentProcessingServiceApplicationTests {
     @MockBean
     private CustomerRepository customerRepository;
 
-    @MockBean
-    private PaymentRepository paymentRepository;
-
     @Autowired
     private PaymentConsumer paymentConsumer;
 
