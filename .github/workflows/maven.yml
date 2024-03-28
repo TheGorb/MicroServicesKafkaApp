@@ -15,17 +15,5 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: compose file
-        uses: hoverkraft-tech/compose-action@v1.5.1
-        with:
-          compose-file: docker-compose.yml
-          compose-version: '3.8'
-          service-name: kafka
-          service-port: 9092
-          service-host: localhost
-          service-wait-for: 60
-          service-retries: 5
-          service-retry-delay: 10
-          service-protocol: tcp
-          service-timeout: 60
-          service-verbose: true
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
