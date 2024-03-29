@@ -4,7 +4,6 @@ import com.commonmessaging.model.Customer;
 import com.commonmessaging.model.Payment;
 import com.commonmessaging.repository.CustomerRepository;
 import com.paymentprocessingservice.consumer.PaymentConsumer;
-import com.paymentprocessingservice.repository.PaymentRepository;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
