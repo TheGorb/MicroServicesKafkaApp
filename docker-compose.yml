@@ -45,12 +45,12 @@ services:
       - "8082:8080"
     depends_on:
       - kafka
-
-  balance-services:
-    build:
-      context: .
-      dockerfile: balance-services/Dockerfile
-    ports:
-      - "8083:8080"
-    depends_on:
-      - kafka
+#
+#  balance-services:
+#    build:
+#      context: .
+#      dockerfile: balance-services/Dockerfile
+#    ports:
+#      - "8083:8080"
+#    depends_on:
+#      - kafka
