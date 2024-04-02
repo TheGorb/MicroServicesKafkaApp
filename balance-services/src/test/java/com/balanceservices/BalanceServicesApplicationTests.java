@@ -10,12 +10,11 @@ import com.commonmessaging.repository.CustomerRepository;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -24,29 +23,23 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = {"addBalance", "lowerBalance"})
 class BalanceServicesApplicationTests {
-    @Autowired
-    private CommonProducer commonProducer;
-
-    @MockBean
     private CustomerRepository customerRepository;
-
-    @MockBean
-    private BalanceRepository balanceRepository;
-
-    @Autowired
     private BalanceConsumer balanceConsumer;
 
     @BeforeEach
     void setUp() {
+        customerRepository = Mockito.mock(CustomerRepository.class);
+        BalanceRepository balanceRepository = Mockito.mock(BalanceRepository.class);
+        CommonProducer commonProducer = Mockito.mock(CommonProducer.class);
+        balanceConsumer = new BalanceConsumer(balanceRepository, customerRepository, commonProducer);
         customerRepository.deleteAll();
     }
-
     @Test
-    void addBalance() {;
+    void addBalance() {
         Customer mockCustomer = new Customer("testCustomer", "testCustomer@email.com", "123")
                 .setId("customer123");
 
@@ -91,7 +84,7 @@ class BalanceServicesApplicationTests {
     }
 
     @Test
-    void lowerBalance() {;
+    void lowerBalance() {
         Customer mockCustomer = new Customer("testCustomer", "testCustomer@email.com", "123")
                 .setId("customer123");
 

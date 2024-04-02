@@ -4,7 +4,7 @@ COPY ../CommonMessaging /usr/src/CommonMessaging
 RUN cd usr/src/CommonMessaging && mvn clean install
 
 COPY payment-processing-services /usr/src/payment-processing-services
-RUN cd /usr/src/payment-processing-services && mvn test && mvn clean package
+RUN cd /usr/src/payment-processing-services && mvn clean package && mvn test
 
 FROM eclipse-temurin:21
 COPY --from=builder /usr/src/payment-processing-services/target/payment-processing-services-*.jar /usr/app/payment-processing-services.jar

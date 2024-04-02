@@ -7,12 +7,11 @@ import com.paymentprocessingservice.consumer.PaymentConsumer;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -21,21 +20,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, topics = {"newCustomer", "rejectedPayment", "acceptedPayment"})
 class PaymentProcessingServiceApplicationTests {
 
-    @MockBean
     private CustomerRepository customerRepository;
 
-    @Autowired
     private PaymentConsumer paymentConsumer;
 
     @BeforeEach
     void setUp() {
+        customerRepository = Mockito.mock(CustomerRepository.class);
+        paymentConsumer = new PaymentConsumer(customerRepository);
         customerRepository.deleteAll();
     }
+
     @Test
     void consumeCustomerEvent() {
         Customer mockCustomer = new Customer("testCustomer", "testCustomer@email.com", "123")

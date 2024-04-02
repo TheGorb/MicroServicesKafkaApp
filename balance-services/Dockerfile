@@ -4,7 +4,7 @@ COPY ../CommonMessaging /usr/src/CommonMessaging
 RUN cd usr/src/CommonMessaging && mvn clean install
 
 COPY balance-services /usr/src/balance-services
-RUN cd /usr/src/balance-services && mvn test && mvn clean package
+RUN cd /usr/src/balance-services && mvn clean package && mvn test
 
 FROM eclipse-temurin:21
 COPY --from=builder /usr/src/balance-services/target/balance-services-*.jar /usr/app/balance-services.jar
