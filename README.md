@@ -7,19 +7,11 @@ The application is structured into the following main components:
 - **CommonMessaging**: A shared library providing common messaging functionalities across microservices.
 - **customer-management-services**: A microservice responsible for managing customer information.
 - **payment-processing-services**: A microservice responsible for processing payments.
+- **balance-processing-services**: A microservice responsible for processing balance updates.
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
-- Docker
-- Docker Compose
-- Java 11
-- Maven
-- Kafka
-- MongoDB
 
 ### Building the Project
 
@@ -56,4 +48,4 @@ This command builds the Docker images for the microservices (if not already buil
 
 Customer Management Service: Accessible at http://localhost:8081
 Payment Processing Service: Accessible at http://localhost:8082
-
+Balance Processing Service: Accessible at http://localhost:8083
