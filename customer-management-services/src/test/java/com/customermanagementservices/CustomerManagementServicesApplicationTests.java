@@ -1,17 +1,20 @@
 package com.customermanagementservices;
 
 import com.commonmessaging.model.Customer;
+import com.commonmessaging.producer.CommonProducer;
 import com.commonmessaging.repository.CustomerRepository;
 import com.customermanagementservices.consumer.CustomerConsumer;
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -20,19 +23,20 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, topics = {"newCustomer", "rejectedPayment", "acceptedPayment"})
+@EmbeddedKafka(partitions = 1, topics = {"newCustomer", "rejectedPayment", "acceptedPayment"}, brokerProperties = {"listeners=localhost:29092", "port=29092"})
 class CustomerManagementServicesApplicationTests {
 
-    @MockBean
     private CustomerRepository customerRepository;
 
-    @Autowired
     private CustomerConsumer customerConsumer;
 
     @BeforeEach
     void setUp() {
+        customerRepository = Mockito.mock(CustomerRepository.class);
+        CommonProducer commonProducer = Mockito.mock(CommonProducer.class);
+        customerConsumer = new CustomerConsumer(customerRepository, commonProducer);
         customerRepository.deleteAll();
     }
 
