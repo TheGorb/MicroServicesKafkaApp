@@ -1,0 +1,30 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Start containers
+        run: |
+          docker-compose -f "docker-compose.yml" up -d --build
+          EXIT_CODE=$?
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "Docker Compose up failed, printing logs..."
+            docker-compose logs
+            exit $EXIT_CODE
+          fi
+
+      - name: Cleanup
+        if: always()
+        run: docker-compose down

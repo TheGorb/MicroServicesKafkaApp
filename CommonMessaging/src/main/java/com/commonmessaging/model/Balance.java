@@ -2,10 +2,13 @@ package com.commonmessaging.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Accessors(chain = true)
 @Document
 public class Balance {
     @Getter

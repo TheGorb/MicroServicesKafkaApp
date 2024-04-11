@@ -27,7 +27,6 @@ public class BalanceConsumer {
     public void consumeAddBalanceEvent(Payment payment) {
         Customer customer = customerRepository.findById(payment.getCustomerId())
                 .orElse(null);
-
         if (customer != null) {
             customer.getCustomerBalance().addBalance(payment.getAmount());
             customerRepository.save(customer);
@@ -38,36 +37,29 @@ public class BalanceConsumer {
     }
 
     @KafkaListener(topics = "lowerBalance", groupId = "balanceGroup")
-    public void consumeLowerBalance(Payment paymentEvent) {
-        Balance balance = balanceRepository.findByCustomerId(paymentEvent.getCustomerId());
-        if (balance == null) {
-            balance = new Balance(paymentEvent.getCustomerId(), paymentEvent.getAmount(), "0");
-            log.info("New balance created for customer: {}", paymentEvent.getCustomerId());
-        } else {
-            balance.addBalance(String.valueOf(paymentEvent.getAmount()));
-            log.info("Balance added for customer: {}", paymentEvent.getCustomerId());
-        }
-        balanceRepository.save(balance);
-    }
-
-    @KafkaListener(topics = "newPayment", groupId = "balanceGroup")
     public void consumeLowerBalanceEvent(Payment paymentEvent) {
-        Balance balance = balanceRepository.findByCustomerId(paymentEvent.getCustomerId());
-        if (balance == null) {
-            balance = new Balance(paymentEvent.getCustomerId(), "0", "0");
+        Customer customer = customerRepository.findById(paymentEvent.getCustomerId())
+                .orElse(null);
+
+        if (customer != null && customer.getCustomerBalance() == null) {
+            Balance balance = new Balance(paymentEvent.getCustomerId(), "0", "0");
+            customer.setCustomerBalance(balance);
+            customerRepository.save(customer);
             commonProducer.sendKafkaEvent("rejectedPayment", new Payment(paymentEvent.getAmount(), paymentEvent.getCurrency(), paymentEvent.getCustomerId()).toJson(), "payment");
             log.info("Payment rejected due to no balance for customer: {}", paymentEvent.getCustomerId());
+        } else if (customer == null) {
+            log.warn("Customer not found: {}", paymentEvent.getCustomerId());
         } else {
-            if (Double.parseDouble(paymentEvent.getAmount()) > Double.parseDouble(balance.getBalance())) {
+            if (Double.parseDouble(paymentEvent.getAmount()) > Double.parseDouble(customer.getCustomerBalance().getBalance())) {
                 commonProducer.sendKafkaEvent("rejectedPayment", new Payment(paymentEvent.getAmount(), paymentEvent.getCurrency(), paymentEvent.getCustomerId()).toJson(), "payment");
                 log.warn("Payment rejected for customer: {}, insufficient funds.", paymentEvent.getCustomerId());
             } else {
-                balance.lowerBalance(String.valueOf(paymentEvent.getAmount()));
+                customer.getCustomerBalance().lowerBalance(String.valueOf(paymentEvent.getAmount()));
+                balanceRepository.save(customer.getCustomerBalance());
                 commonProducer.sendKafkaEvent("acceptedPayment", new Payment(paymentEvent.getAmount(), paymentEvent.getCurrency(), paymentEvent.getCustomerId()).toJson(), "payment");
                 log.info("Payment accepted and balance lowered for customer: {}", paymentEvent.getCustomerId());
             }
         }
-        balanceRepository.save(balance);
     }
 
     @KafkaListener(topics = "newCustomer", groupId = "newCustomerBalance")
